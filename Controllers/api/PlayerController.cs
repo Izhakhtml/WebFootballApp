@@ -19,8 +19,8 @@ namespace WebFootballApp.Controllers.api
 
             try
             {
-                List<Player> players = dbContext.Players.ToList();
-                return Ok(new {players});
+                List<Player> playersList = dbContext.Players.ToList();
+                return Ok(new { playersList });
             }
             catch (SqlException sql)
             {
@@ -36,7 +36,9 @@ namespace WebFootballApp.Controllers.api
         {
             try
             {
-                return Ok(new {GetById = await dbContext.Players.FindAsync(id)});
+
+                     return Ok(new {GetById = await dbContext.Players.FindAsync(id)});
+                
             }
             catch (SqlException sql)
             {
@@ -55,7 +57,7 @@ namespace WebFootballApp.Controllers.api
             {
                 dbContext.Players.Add(player);
                 await dbContext.SaveChangesAsync();
-                return Ok("The player added");
+                return Ok("The player have been added successfully");
             }
             catch (SqlException sql)
             {
