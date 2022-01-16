@@ -26,9 +26,9 @@ namespace WebFootballApp.Controllers.api
             {
                 return BadRequest(sql.Message);
             }
-            catch (Exception sql)
+            catch (Exception ex)
             {
-                return BadRequest(sql.Message);
+                return BadRequest(ex.Message);
             }
         }
         // GET: api/Player/5
@@ -36,17 +36,20 @@ namespace WebFootballApp.Controllers.api
         {
             try
             {
-
-                     return Ok(new {GetById = await dbContext.Players.FindAsync(id)});
-                
+                Player GetById = await dbContext.Players.FindAsync(id);
+                if (GetById!=null)
+                {
+                     return Ok(new {GetById});
+                }
+                     return NotFound();
             }
             catch (SqlException sql)
             {
                 return BadRequest(sql.Message);
             }
-            catch (Exception sql)
+            catch (Exception ex)
             {
-                return BadRequest(sql.Message);
+                return BadRequest(ex.Message);
             }
 
         }
@@ -63,32 +66,37 @@ namespace WebFootballApp.Controllers.api
             {
                 return BadRequest(sql.Message);
             }
-            catch(Exception sql)
+            catch(Exception ex)
             {
-                return BadRequest(sql.Message);
+                return BadRequest(ex.Message);
             }
 
         }
         // PUT: api/Player/5
-        public async Task<IHttpActionResult> Put(int id, [FromBody]Player value)
+        public async Task<IHttpActionResult> Put(int id, [FromBody]Player updatePlayer)
         {
             try
             {
-                Player player = await dbContext.Players.FindAsync(id);
-                player.FirstName = value.FirstName;
-                player.LastNamme = value.LastNamme;
-                player.Position = value.Position;
-                player.Age = value.Age;
-                await dbContext.SaveChangesAsync();
-                return Ok("The changes have been saved successfully");
+                   Player player = await dbContext.Players.FindAsync(id);
+                if (player != null)
+                {
+                   player.FirstName = updatePlayer.FirstName;
+                   player.LastNamme = updatePlayer.LastNamme;
+                   player.Position = updatePlayer.Position;
+                   player.Age = updatePlayer.Age;
+                   await dbContext.SaveChangesAsync();
+                   return Ok("The changes have been saved successfully");
+                }
+                   return NotFound();
+
             }
             catch (SqlException sql)
             {
                 return BadRequest(sql.Message);
             }
-            catch (Exception sql)
+            catch (Exception ex)
             {
-                return BadRequest(sql.Message);
+                return BadRequest(ex.Message);
             }
         }
         // DELETE: api/Player/5
@@ -105,9 +113,9 @@ namespace WebFootballApp.Controllers.api
             {
                 return BadRequest(sql.Message);
             }
-            catch (Exception sql)
+            catch (Exception ex)
             {
-                return BadRequest(sql.Message);
+                return BadRequest(ex.Message);
             }
 
         }
